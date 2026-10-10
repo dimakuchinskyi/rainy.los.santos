@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rainy L.S. | GTA V Weather 24/7</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #080b11;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        #rainCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .donate-btn {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 50%, #8b5cf6 100%);
+            box-shadow: 0 0 25px rgba(99, 102, 241, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .donate-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                60deg,
+                transparent,
+                rgba(255, 255, 255, 0.25),
+                transparent
+            );
+            transform: rotate(30deg) translateY(-100%);
+            animation: shimmer 3.5s infinite;
+        }
+        @keyframes shimmer {
+            0% { transform: rotate(30deg) translateY(-100%); }
+            20% { transform: rotate(30deg) translateY(100%); }
+            100% { transform: rotate(30deg) translateY(100%); }
+        }
+        .donate-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 35px rgba(99, 102, 241, 0.7);
+        }
+
+        .link-card {
+            transition: all 0.25s ease;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .link-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.18);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .live-dot {
+            animation: pulse-red 2s infinite;
+        }
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center p-4 min-h-screen relative">
+
+    <canvas id="rainCanvas"></canvas>
+    <div class="fixed top-1/4 left-1/2 -translate-x-1/2 w-[350px] h-[350px] bg-indigo-600/20 blur-[120px] rounded-full pointer-events-none z-0"></div>
+
+    <div class="w-full max-w-sm mx-auto p-7 glass-panel rounded-3xl text-center relative z-10">
+        
+        <!-- Аватарка (вместо тучки логотип из img/logo.jpg) -->
+        <div class="relative w-24 h-24 mx-auto mb-4">
+            <div class="w-full h-full rounded-full p-[2px] bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 shadow-lg overflow-hidden">
+                <img src="img/logo.jpg" alt="Rainy L.S. Logo" class="w-full h-full object-cover rounded-full">
+            </div>
+            <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-red-500 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1 shadow-md z-10">
+                <span class="w-1.5 h-1.5 bg-white rounded-full live-dot"></span> LIVE
+            </div>
+        </div>
+
+        <!-- Заголовок -->
+        <h1 class="text-2xl font-bold text-white tracking-tight">Rainy L.S.</h1>
+        <p class="text-xs text-gray-400 mt-1 mb-6 font-medium">GTA V Weather 24/7 • Lo-Fi & Chill Weather</p>
+
+        <!-- Кнопки -->
+        <div class="space-y-3.5">
+            
+            <!-- Кнопка Доната (Ko-fi) -->
+            <a href="https://ko-fi.com/rainylosantos" target="_blank" class="donate-btn block w-full py-4 px-5 text-white font-semibold rounded-2xl text-sm tracking-wide">
+                ⚡ Support Stream & Donate
+            </a>
+
+            <!-- TikTok Profile -->
+            <a href="https://www.tiktok.com/@rainy.los.santos" target="_blank" class="link-card block w-full py-3.5 px-5 text-gray-200 font-medium rounded-2xl text-sm flex items-center justify-between">
+                <span class="flex items-center gap-3"><span class="text-base">🎵</span> TikTok Profile</span>
+                <span class="text-gray-500 text-xs">→</span>
+            </a>
+
+            <!-- Telegram Channel -->
+            <a href="https://t.me/trap_dollarov" target="_blank" class="link-card block w-full py-3.5 px-5 text-gray-200 font-medium rounded-2xl text-sm flex items-center justify-between">
+                <span class="flex items-center gap-3"><span class="text-base">✈️</span> Telegram Channel</span>
+                <span class="text-gray-500 text-xs">→</span>
+            </a>
+
+            <!-- Instagram -->
+            <a href="https://instagram.com/kassa.2.6" target="_blank" class="link-card block w-full py-3.5 px-5 text-gray-200 font-medium rounded-2xl text-sm flex items-center justify-between">
+                <span class="flex items-center gap-3"><span class="text-base">📸</span> Instagram</span>
+                <span class="text-gray-500 text-xs">→</span>
+            </a>
+
+        </div>
+
+        <div class="mt-8 pt-4 border-t border-white/5 text-[11px] text-gray-500 font-medium">
+            Fueled by coffee & 24/7 vibes ☕
+        </div>
+
+    </div>
+
+    <script>
+        const canvas = document.getElementById('rainCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        const drops = [];
+        const dropCount = 120;
+
+        for (let i = 0; i < dropCount; i++) {
+            drops.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                length: Math.random() * 20 + 10,
+                speed: Math.random() * 10 + 12,
+                opacity: Math.random() * 0.3 + 0.1
+            });
+        }
+
+        function drawRain() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (let i = 0; i < drops.length; i++) {
+                const d = drops[i];
+                ctx.beginPath();
+                ctx.strokeStyle = `rgba(165, 180, 252, ${d.opacity})`;
+                ctx.lineWidth = 1;
+                ctx.moveTo(d.x, d.y);
+                ctx.lineTo(d.x - 2, d.y + d.length);
+                ctx.stroke();
+
+                d.y += d.speed;
+                d.x -= 0.5;
+
+                if (d.y > canvas.height) {
+                    d.y = -d.length;
+                    d.x = Math.random() * canvas.width;
+                }
+            }
+            requestAnimationFrame(drawRain);
+        }
+        drawRain();
+    </script>
+</body>
+</html>
